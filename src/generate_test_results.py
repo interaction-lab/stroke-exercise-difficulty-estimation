@@ -23,15 +23,16 @@ test_datasets = [dataset for dataset in datasets if dataset['pid'] not in EVAL_P
 
 results = []
 
+
 #models with their assocaited tuned hyperparameters
 models = [
-    {'name': 'CausalForestDML', 'model': CausalForestDML(discrete_treatment=True)},
-    {'name': 'RandomForestRegressor', 'model': RandomForestRegressor()},
+    {'name': 'CausalForestDML', 'model': CausalForestDML(n_estimators=100,min_samples_leaf=5, discrete_treatment=True)},
+    {'name': 'RandomForestRegressor', 'model': RandomForestRegressor(n_estimators=100, max_depth=100)},
     {'name': 'GradientBoostingRegressor', 'model': GradientBoostingRegressor()},
-    {'name': 'DecisionTreeRegressor', 'model': DecisionTreeRegressor()},
-    {'name': 'SVR', 'model': SVR()},
-    {'name': 'NearestNeighbors', 'model': KNeighborsRegressor()},
-    {'name': 'MLPRegressor', 'model': MLPRegressor()},
+    {'name': 'DecisionTreeRegressor', 'model': DecisionTreeRegressor(max_depth=10, min_samples_split=10, min_samples_leaf=4)},
+    {'name': 'SVR', 'model': SVR(C=10, gamma=0.0001, kernel='rbf')},
+    {'name': 'NearestNeighbors', 'model': KNeighborsRegressor(n_neighbors=15, weights ='distance', metric='manhattan')},
+    {'name': 'MLPRegressor', 'model': MLPRegressor(hidden_layer_sizes=(50, 50), learning_rate_init=0.001, max_iter=500)},
 ]
 
 for model in models:
