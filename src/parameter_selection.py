@@ -21,13 +21,12 @@ from sklearn.metrics import r2_score, mean_squared_error
 # Hyperparameter grids
 param_grids = {
     'CausalForestDML': {
-        'n_estimators': [100, 200],
-        'min_samples_leaf': [5, 10],
-        'discrete_treatment': ['True'],
+        'n_estimators': [40, 100, 200, 600, 1000],
+        'min_samples_leaf': [1, 5, 10],
     },
     'RandomForestRegressor': {
-        'n_estimators': [50, 100, 200],
-        'max_depth': [None, 10, 20],
+        'n_estimators': [50, 100, 200, 600, 1000],
+        'max_depth': [None, 10, 20, 50, 100],
     },
     'GradientBoostingRegressor': {
         'n_estimators': [50, 100, 200],
@@ -35,32 +34,31 @@ param_grids = {
         'max_depth': [3, 5, 7],
     },
     'DecisionTreeRegressor': {
-        'max_depth': [None, 5, 10],
+        'max_depth': [10, 20, 30, None],
         'min_samples_split': [2, 5, 10],
+        'min_samples_leaf': [1, 2, 4]
     },
     'SVR': {
-        'C': [0.1, 1, 10],
+        'C': [0.1, 1, 10, 100, 1000],
+        'gamma': ['scale', 1, 0.1, 0.01, 0.001, 0.0001],
         'kernel': ['linear', 'rbf'],
     },
     'NearestNeighbors': {
-        'n_neighbors': [3, 5, 10],
-        'weights': ['uniform', 'distance'],
+        'n_neighbors' : [5,7,9,11,13,15],
+        'weights' : ['uniform','distance'],
+        'metric' : ['minkowski','euclidean','manhattan']
     },
     'MLPRegressor': {
         'hidden_layer_sizes': [(50,), (100,), (50, 50)],
-        'learning_rate_init': [0.001, 0.01],
-        'max_iter': [200, 500],
-    },
-    'XGBoost': {
-        'n_estimators': [50, 100, 200],
-        'max_depth': [3, 6, 10],
-        'learning_rate': [0.01, 0.1, 0.2],
+        'learning_rate_init': [0.001, 0.01, 0.1],
+        'max_iter': [200, 500, 1000],
     },
 }
 
 
 datasets = get_train_test_data()
-test_datasets = [dataset for dataset in datasets if dataset['pid'] not in EVAL_PIDS]
+
+test_datasets = [dataset for dataset in datasets if dataset['pid'] in EVAL_PIDS]
 
 results = []
 
