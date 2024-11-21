@@ -1,4 +1,4 @@
-from utils import get_train_test_data
+from utils import get_train_test_data, get_features
 
 import numpy as np
 import pandas as pd
@@ -27,12 +27,9 @@ def get_X():
     X = data[(data[:,0]**2 + data[:,1]**2 < max_distance**2) & \
             (data[:,0]**2 + data[:,1]**2 > min_distance**2)]
     X = X/100
-    x3 = X[:,0]**2 + X[:,1]**2 + X[:,2]**2
-    x4 = X[:,0]**2
+    df = pd.DataFrame(X, columns=['x','y','z'])
 
-    X = np.vstack([X.T,x3,x4])
-
-    return X.T
+    return get_features(df)
 
 def get_groups(tree, covariates):
     '''

@@ -4,6 +4,24 @@ import numpy as np
 from tqdm import tqdm
 
 
+
+all_data = []
+for i in range(10, 21):
+    try:
+        for file in os.listdir(f'../data/{i}'):
+            data = pd.read_csv(f'../data/{i}/{file}')
+
+            to_append = data[['time', 'side','time_to_press','statement','x','y','z']]
+            to_append['pid'] = i
+            to_append['visit'] = file.split('.')[0]
+
+            all_data.append(to_append)
+
+    except Exception as e:
+        print(e)
+all_data = pd.concat(all_data)
+all_data.to_csv('../simplified_data/neurotypical_data2.csv', index=False)
+
 #load in all the individual data files
 all_data = []
 for i in range(21, 37):
@@ -11,7 +29,7 @@ for i in range(21, 37):
         for file in os.listdir(f'../data/{i}'):
             data = pd.read_csv(f'../data/{i}/{file}')
 
-            to_append = data.query('condition == "constrained"') [['time', 'side','time_to_press','x','y','z']]
+            to_append = data.query('condition == "constrained"') [['time', 'side','time_to_press','statement','x','y','z']]
             to_append['pid'] = i
             to_append['visit'] = file.split('.')[0]
 

@@ -65,9 +65,17 @@ def get_features(data):
     Extract the features from the data
     '''
     data['distance'] = np.sqrt(data['x']**2 + data['y']**2 + data['z']**2)
-    data['rand'] = np.random.randint(0, 4, len(data))
     data['x^2'] = data['x']**2
     data['y^2'] = data['y']**2
     data['z^2'] = data['z']**2
-
-    return data[['x','y','z', 'distance', 'x^2']].values
+    
+    # Dummy code the 'statement' column
+    statement_dummies = pd.get_dummies(data['statement'], prefix='statement')
+    
+    # Combine the original data with the dummy-coded columns
+    data = pd.concat([data, statement_dummies], axis=1)
+    
+    # Select the relevant columns for features
+    features = data[['x', 'y', 'z', 'distance', 'x^2', 'y^2', 'z^2'] + list(statement_dummies.columns)].values
+    
+    return features
