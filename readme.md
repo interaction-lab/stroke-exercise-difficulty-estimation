@@ -2,38 +2,46 @@
 
 This repository contains the code and resources for the paper ``Modeling Personalized Difficulty of Rehabilitation Exercises Using Causal Trees" published at _2025 IEEE/RAS International Conference on Rehabilitation Robotics (ICORR)_. This project contains the code to create personalized difficulty models for rehabilitation tasks, enabling computational adaptation of task difficulty.
 
-<p align="center">
-  <figure style="display: inline-block; margin: 10px;">
-    <img src="assets/PID27.png" width="300"/>
-    <figcaption style="text-align: center;">PID 27, right-affected</figcaption>
-  </figure>
-  <figure style="display: inline-block; margin: 10px;">
-    <img src="assets/PID31.png" width="300"/>
-    <figcaption style="text-align: center;">PID 31, left-affected</figcaption>
-  </figure>
-</p>
+<table style="margin-left: auto; margin-right: auto; width: 700px;"> <tr>
+    <td style="text-align: center; padding: 10px;">
+      <img src="assets/PID27.png" width="300"/>
+      <br>PID 27, right-affected
+    </td>
+    <td style="text-align: center; padding: 10px;">
+      <img src="assets/PID31.png" width="300"/>
+      <br>PID 31, left-affected
+    </td>
+  </tr>
+</table>
 
 ## Modeling Functional Difficulty
 
-Drawing upon the [Challenge Point Framework](https://en.wikipedia.org/wiki/Challenge_point_framework) (CPF), which posits that there is an optimal task difficulty for motor learning, this project focuses on quantifying _functional_ task difficulty – the difficulty of a task relative to an individual's skill – as distinct from _nominal_ task difficulty. Quantitatively estimating this difference is challenging due to high variance in performance measurements.
-To address this, we adapt techniques from estimating heterogeneous treatment effects. We formalize individual exercise difficulty for a task x using the potential outcomes framework as:
+Drawing upon the principles of the [Challenge Point Framework](https://en.wikipedia.org/wiki/Challenge_point_framework) (CPF), which posits that motor learning is optimized at an ideal level of task difficulty, this project focuses on the quantitative estimation of **functional task difficulty**. Functional difficulty is defined as the difficulty of a task relative to an individual's specific skill level, a crucial distinction from the inherent or average task difficulty, often referred to as **nominal task difficulty**. Accurately quantifying this personalized difficulty is challenging, largely due to the high variance typically observed in human performance measurements, especially within diverse populations.
 
-τ(x)=E[Y(1)−Y(0)∣X=x]
+To address the challenge of high performance variance and estimate individual-specific task difficulty, we adapt techniques from the field of **heterogeneous treatment effect estimation**. We formalize the concept of individual exercise difficulty for a specific task represented by feature vector $x$ using the **potential outcomes framework**:
 
-Where Y(1) denotes the outcome measure of a post-stroke user performing the exercise x and Y(0) denotes the outcome measure of a neurotypical user performing exercise x, i.e., the nominal task difficulty. We estimate Y(0) from data collected from neurotypical users and Y(1) from individual post-stroke user data.
+$$ \tau(x) = E[Y(1) - Y(0) \mid X=x] $$
 
+In this formulation:
+* $Y(1)$ represents the potential outcome measure (e.g., task completion time, error rate) of a post-stroke user performing task $x$.
+* $Y(0)$ represents the potential outcome measure of a neurotypical user performing the same task $x$, effectively representing the nominal task difficulty.
+* $E[\cdot \mid X=x]$ denotes the expected value conditioned on the task parameters $X$ being equal to $x$.
 
-## The Framework
+Our approach estimates the expected outcome for the neurotypical population ($E[Y(0) \mid X=x]$) using data collected from neurotypical users performing task $x$. Similarly, the expected outcome for a post-stroke user ($E[Y(1) \mid X=x]$) is estimated from data specific to that individual post-stroke user performing task $x$.
 
-To use this framework to learn personalized difficulty models, you will need two key datasets:  
+## Framework Implementation and Data Requirements
 
-1. a dataset from users with limited mobility (e.g., `simplified_data/poststroke_data.csv`)
-2. a dataset from normative use that can be used to estimate nominal task difficulty (e.g., `simplified_data/neurotypical_data.csv`)
+Implementing this framework to learn personalized functional difficulty models requires two distinct datasets:
 
-Each dataset must contain the following columns:
-- PID: a unique participant identifier
-- 1...N task parameter columns
-- an outcome measure column
+1.  **Limited Mobility / Post-Stroke Dataset:** Contains data from users with limited mobility (e.g., post-stroke individuals) performing the tasks. Example file path: `simplified_data/poststroke_data.csv`.
+2.  **Neurotypical Dataset:** Contains data from neurotypical users performing the same tasks. This dataset is used to model the nominal task difficulty. Example file path: `simplified_data/neurotypical_data.csv`.
+
+Both datasets must adhere to a specific structure, including the following essential columns:
+
+* `PID`: A unique identifier for each participant. This is crucial for tracking individual performance and results.
+* `Task Parameters`: One or more columns (e.g., `param1`, `param2`, ..., `paramN`) that quantitatively describe the specific configuration or parameters of the task being performed ($X=x$).
+* `Outcome Measure`: A single column representing the key performance metric for the task execution (e.g., time taken, success/failure flag, error count) ($Y$).
+
 
 
 ## Installation
