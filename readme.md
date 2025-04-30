@@ -1,6 +1,6 @@
 # Functional Difficulty Estimation
 
-This repository contains the code and resources for the paper ``Modeling Personalized Difficulty of Rehabilitation Exercises Using Causal Trees" published at _2025 IEEE/RAS International Conference on Rehabilitation Robotics (ICORR)_. This project contains the code to create personalized difficulty models for rehabilitation tasks, enabling computational adaptation of task difficulty.
+This repository contains the code and resources for the paper "Modeling Personalized Difficulty of Rehabilitation Exercises Using Causal Trees" published at _2025 IEEE/RAS International Conference on Rehabilitation Robotics (ICORR)_. This project contains the code to create personalized difficulty models for rehabilitation tasks, enabling computational adaptation of task difficulty.
 
 <table style="margin-left: auto; margin-right: auto; width: 700px;"> <tr>
     <td style="text-align: center; padding: 10px;">
